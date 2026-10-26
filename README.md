@@ -2,7 +2,7 @@
  
  📍 **Kyiv, Ukraine (GMT+2)** • 🇬🇧 **English B2** (Upper-Intermediate)  
  🎓 **B.Sc. Digital Economics (2nd Year)**  
- 🔗 [LinkedIn Profile](https://www.linkedin.com/in/daniil-marchenko-7660203b6/) • 🐙 [GitHub Profile](https://github.com/pricenly) • 📧 [Email Me](mailto:daniil.marchenko@example.com)
+ 🔗 [LinkedIn Profile](https://www.linkedin.com/in/daniil-marchenko-7660203b6/) • 🐙 [GitHub Profile](https://github.com/pricenly) • 📧 [Email Me](ihate6ou@gmail.com)
  
  ---
  
