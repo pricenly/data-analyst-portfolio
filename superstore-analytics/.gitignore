@@ -1,0 +1,8 @@
+ # Data & Outputs
+ data/
+ output/
+ *.csv
+ *.parquet
+ *.xlsx
+ .ipynb_checkpoints/
+ __pycache__/
