@@ -1,0 +1,9 @@
+check,rows_or_flags,handling
+Input rows,3113,Rows read from CSV
+Exact duplicate rows,0,Exact duplicates removed
+Missing/blank user_id,0,Rows removed
+Invalid or missing order_date,0,Rows removed
+Invalid or missing revenue,0,Rows removed
+Non-positive revenue,0,Rows removed; assumes revenue is a positive purchase amount
+High-revenue IQR flags,162,Retained for review (upper fence: 114.32)
+Rows retained,3113,0 rows excluded in total
