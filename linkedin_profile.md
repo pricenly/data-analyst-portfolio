@@ -44,7 +44,7 @@
  📂 Check out my end-to-end data projects on GitHub:
  https://github.com/pricenly
  
- 🎯 I am actively seeking a Junior Data Analyst role or Analytics Internship (Remote or Hybrid in Kyiv). Feel free to reach out via direct message or email at daniil.marchenko@example.com.
+ 🎯 I am actively seeking a Junior Data Analyst role or Analytics Internship (Remote or Hybrid in Kyiv). Feel free to reach out via direct message or email at beshary47@gmail.com or phone: +380 67 110 9366.
  ```
  
  ---
