@@ -1,8 +1,9 @@
- # Data & Outputs
- data/
- output/
- *.csv
- *.parquet
- *.xlsx
- .ipynb_checkpoints/
- __pycache__/
+# Generated data and outputs
+data/*
+!data/SampleSuperstore.csv
+!data/README.md
+output/
+*.parquet
+*.xlsx
+.ipynb_checkpoints/
+__pycache__/

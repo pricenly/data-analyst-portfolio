@@ -1,8 +1,8 @@
- # Data & DB dumps
- *.csv
- *.tsv
- *.xlsx
- *.sql.gz
- *.dump
- data/
- *.parquet
+# Data & DB dumps
+*.csv
+*.tsv
+*.xlsx
+*.sql.gz
+*.dump
+data/
+*.parquet

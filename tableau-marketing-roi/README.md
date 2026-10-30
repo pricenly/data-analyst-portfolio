@@ -1,164 +1,140 @@
- # Marketing ROI Dashboard - Tableau Public
- 
- **Portfolio Project 3** - Junior Data Analyst | Daniil Marchenko
- 
- ---
- 
- ## Business Context
- 
- Executive-facing dashboard for a D2C e-commerce brand to answer:
- 
- 1. **Channel Performance** - Spend vs Revenue, ROAS, CAC by channel/week
- 2. **CAC Payback Period** - Months to recover acquisition cost per channel
- 3. **Attribution Waterfall** - First-touch vs Last-touch vs Data-driven
- 4. **Scenario Planning** - What if we increase TikTok spend by 20%?
- 5. **Cohort LTV:CAC** - Lifetime value to acquisition cost by acquisition month
- 
- ---
- 
- ## Data Sources (Simulated / Public)
- 
- | Source | Description | Refresh |
- |--------|-------------|---------|
- | marketing_spend.csv | Daily spend by channel (Meta, Google, TikTok, Email, Affiliate) | Daily |
- | attributed_revenue.csv | Orders with UTM-attributed channel, revenue, customer_id | Daily |
- | customers.csv | Customer cohort, first_order_date, lifetime_revenue | Daily |
- 
- Note: For portfolio, use the exported CSVs from Project 2 (superstore-analytics/output/)
- or generate synthetic data via generate_data.py (see below).
- 
- ---
- 
- ## Dashboard Structure (Tableau Public)
- 
- ### Page 1: Executive Overview
- - **KPI Cards:** Total Spend, Total Revenue, Blended ROAS, Blended CAC, Payback (mo)
- - **Trend:** Weekly Spend vs Revenue (dual axis)
- - **Channel Mix:** Stacked bar (spend % by channel over time)
- 
- ### Page 2: Channel Deep-Dive
- - **Scatter:** CAC vs LTV by channel (quadrant: Stars, Dogs, Questions, Cash Cows)
- - **Table:** Channel | Spend | Revenue | ROAS | CAC | Orders | Payback Mo
- - **Parameter:** Select channel -> filters all charts
- 
- ### Page 3: Cohort Analysis
- - **Heatmap:** Acquisition Month x Months Since First Order | Retention %
- - **Line:** Cumulative LTV by Cohort (Month 0-12)
- - **Bar:** LTV:CAC Ratio by Cohort (target > 3x)
- 
- ### Page 4: Scenario Simulator
- - **Parameter:** Channel selector + % Spend Change slider (-50% to +100%)
- - **Calculated Field:** Projected Revenue = Current Revenue * (1 + %Change * Elasticity)
- - **KPI:** Projected ROAS, Projected Payback, Incremental Profit
- - **Assumption:** Elasticity per channel (Meta 0.8, Google 0.9, TikTok 1.2, Email 0.5)
- 
- ---
- 
- ## Key Tableau Techniques Demonstrated
- 
- | Technique | Where Used |
- |-----------|------------|
- | **Level of Detail (LOD)** | {FIXED [Customer ID]: MIN([Order Date])} for cohort assignment |
- | **Table Calculations** | RUNNING_SUM, LOOKUP, WINDOW_AVG for payback & retention |
- | **Parameters** | Channel filter, Spend change %, Date range |
- | **Calculated Fields** | ROAS, CAC, Payback, LTV:CAC, Elasticity projection |
- | **Sets** | Top N channels, High-value customers |
- | **Dashboard Actions** | Filter across sheets, URL action to Google Ads |
- | **Tooltips** | Custom viz in tooltip (sparkline per channel) |
- 
- ---
- 
- ## Quick Start
- 
- ### 1. Generate Sample Data (if you don't have real data)
- ```bash
- cd tableau-marketing-roi
- python generate_data.py
- # Creates: marketing_spend.csv, attributed_revenue.csv, customers.csv
- ```
- 
- ### 2. Open in Tableau
- - **Tableau Desktop:** Open marketing_roi.twbx
- - **Tableau Public:** Download .twbx -> Open in Public -> Publish
- 
- ### 3. Connect Your Data
- - Replace CSV connections with your database (PostgreSQL, BigQuery, Snowflake)
- - Update calculated fields if column names differ
- 
- ---
- 
- ## File Structure
- 
- ```
- tableau-marketing-roi/
- ├── marketing_roi.twbx           # Packaged workbook (Tableau)
- ├── marketing_roi.twb            # XML workbook (editable in text editor)
- ├── data/
- │   ├── marketing_spend.csv
- │   ├── attributed_revenue.csv
- │   └── customers.csv
- ├── generate_data.py             # Synthetic data generator
- ├── calculated_fields.md         # All calculated field definitions
- └── README.md                    # This file
- ```
- 
- ---
- 
- ## Calculated Fields Reference (calculated_fields.md)
- 
- Key fields to recreate:
- 
- ```
- // Blended ROAS
- SUM([Revenue]) / SUM([Spend])
- 
- // Blended CAC
- SUM([Spend]) / COUNTD([Customer ID])
- 
- // Payback Months
- // Running sum of profit per cohort / CAC
- RUNNING_SUM(SUM([Profit])) / [CAC]
- 
- // Cohort Month (LOD)
- {FIXED [Customer ID]: DATETRUNC('month', MIN([Order Date]))}
- 
- // Months Since First Order
- DATEDIFF('month', [Cohort Month], DATETRUNC('month', [Order Date]))
- 
- // Retention % (Table Calc)
- COUNTD([Customer ID]) / LOOKUP(COUNTD([Customer ID]), FIRST())
- 
- // Scenario Projected Revenue
- [Revenue] * (1 + [Spend Change %] * [Channel Elasticity])
- ```
- 
- ---
- 
- ## Screenshots for Portfolio
- 
- Add these after building:
- 1. Executive Overview (full dashboard)
- 2. Channel Deep-Dive with parameter selected
- 3. Cohort Retention Heatmap
- 4. Scenario Simulator with slider at +30%
- 
- ---
- 
- ## Publish to Tableau Public
- 
- 1. Open .twbx in Tableau Desktop (free trial) or Tableau Public Web Authoring
- 2. Server -> Tableau Public -> Save to Tableau Public
- 3. Title: "Marketing ROI Dashboard - D2C E-commerce"
- 4. Description: Link to this repo + methodology
- 5. Set to Public -> Copy embed code / URL for LinkedIn/Resume
- 
- ---
- 
- ## Related Projects
- 
- - Project 1: E-Commerce SQL Analytics - Cohort retention & LTV in SQL
- - Project 2: Superstore Python EDA - RFM, forecasting, data prep
- 
- ---
- 
- *Part of Daniil Marchenko's Data Analyst Portfolio*
+# Marketing ROI Dashboard — Tableau Design Specification
+
+**Portfolio project** · Daniil Marchenko · Junior Data Analyst
+
+> **Status: specification, not a published workbook.**
+> This folder contains a reproducible data generator, a complete calculated-field
+> library and a page-by-page dashboard design. A `.twbx` is not included because
+> building and publishing it requires a Tableau licence, which I do not currently
+> hold. Every field below can be recreated in Tableau Desktop / Public in about
+> 30 minutes from the generated CSVs.
+
+---
+
+## Business questions
+
+1. Which acquisition channels bring revenue, and at what CAC and ROAS?
+2. How many months does a channel need to pay back acquisition cost?
+3. Do cohorts acquired through different channels behave differently?
+4. What happens to revenue and profit if budget moves between channels?
+
+---
+
+## Data
+
+Generated by [`generate_data.py`](./generate_data.py) with a fixed seed
+(`numpy.random.seed(42)`), so the files are reproducible.
+
+| File | Rows | Columns |
+|---|---|---|
+| `data/marketing_spend.csv` | 4,386 | `date`, `channel`, `spend`, `impressions`, `clicks` |
+| `data/attributed_revenue.csv` | 19,383 | `order_id`, `customer_id`, `order_date`, `attribution_channel`, `revenue`, `profit`, `is_first_order` |
+| `data/customers.csv` | 5,000 | `customer_id`, `first_order_date`, `acquisition_channel`, `lifetime_revenue`, `total_orders`, `is_active` |
+
+Period: 2023-01-01 → 2024-12-31. Channels: Meta, Google, TikTok, Email,
+Affiliate, Organic. The data is **synthetic** and is not calibrated to a real
+advertiser.
+
+Generate:
+
+```bash
+python generate_data.py
+```
+
+---
+
+## Dashboard pages
+
+### Page 1 — Executive overview
+
+| Element | Definition |
+|---|---|
+| KPI cards | Total spend, total revenue, blended ROAS, blended CAC, profit |
+| Trend | Weekly spend vs revenue, dual axis |
+| Channel mix | Stacked bar: share of spend by channel over time |
+| Filter | Date range applied to all sheets |
+
+### Page 2 — Channel deep-dive
+
+| Element | Definition |
+|---|---|
+| Quadrant scatter | CAC (x) vs LTV per customer (y), one mark per channel |
+| Table | Channel, spend, revenue, ROAS, CAC, orders, payback months |
+| Parameter | `Channel select` filters the page |
+
+### Page 3 — Cohort behaviour
+
+| Element | Definition |
+|---|---|
+| Heatmap | Acquisition month × months since first order → retention % |
+| Line | Cumulative revenue per customer by cohort |
+| Bar | LTV : CAC by cohort (target ≥ 3×) |
+
+### Page 4 — Scenario simulator
+
+| Element | Definition |
+|---|---|
+| Parameter | `Spend change %`, range −50% … +100%, step 5 |
+| Parameter | `Channel elasticity` (illustrative input, not an estimate) |
+| KPI | Projected revenue, projected ROAS, incremental profit |
+| Note | Elasticity values are assumptions for the exercise; they are not causal estimates |
+
+---
+
+## Field mapping
+
+The generated CSVs use snake_case. Rename on connect, or adapt the formulas:
+
+| CSV column | Tableau field used below |
+|---|---|
+| `attribution_channel` | `Channel` |
+| `order_date` | `Order Date` |
+| `customer_id` | `Customer ID` |
+| `revenue` / `profit` / `spend` | `Revenue` / `Profit` / `Spend` |
+
+All calculated fields are listed in [`calculated_fields.md`](./calculated_fields.md).
+
+---
+
+## Selected calculated fields
+
+```text
+// Blended ROAS
+SUM([Revenue]) / SUM([Spend])
+
+// Blended CAC
+SUM([Spend]) / COUNTD([Customer ID])
+
+// Cohort month (LOD)
+{ FIXED [Customer ID] : DATETRUNC('month', MIN([Order Date])) }
+
+// Months since first order
+DATEDIFF('month', [Cohort Month], DATETRUNC('month', [Order Date]))
+
+// Retention % (table calc, compute along Months Since First Order)
+COUNTD([Customer ID]) / LOOKUP(COUNTD([Customer ID]), FIRST())
+
+// Scenario revenue
+[Revenue] * (1 + [Spend Change %] * [Channel Elasticity])
+```
+
+---
+
+## What this project demonstrates
+
+- Dimensional thinking: spend and revenue live at different grains (channel-day
+  vs order), so the join and aggregation level matter.
+- LOD expressions for cohort assignment.
+- Table calculations for retention and payback.
+- Parameter-driven scenario analysis with explicitly stated assumptions.
+
+## Limitations
+
+- Synthetic data: results say nothing about real channel performance.
+- Payback is approximated from cumulative profit / CAC, not from a cash-flow model.
+- Attribution is single-touch (the channel recorded on the order), not a
+  multi-touch model.
+
+---
+
+*Part of [Daniil Marchenko's data analyst portfolio](../README.md).*

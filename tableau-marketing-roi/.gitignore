@@ -1,5 +1,5 @@
- # Tableau extracts & data
- data/*.csv
- *.hyper
- *.twbx
- !*.twb
+# Tableau extracts & data
+data/*.csv
+*.hyper
+*.twbx
+!*.twb

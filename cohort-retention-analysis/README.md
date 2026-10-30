@@ -107,6 +107,26 @@ The generator defaults to the latest 12 calendar months relative to its run
 date. Its fixed default random seed makes generated records reproducible for
 the same date and parameters; the date window itself changes over time.
 
+## Results
+
+The current run generated 3,113 transactions from 2025-11-01 to 2026-10-30.
+Quality gates passed with 0 rows excluded and 162 high-revenue rows flagged for
+review (upper IQR fence: 114.32).
+
+| Cohort | Month 0 | Month 1 | Month 3 | Month 6 |
+|---|---|---|---|---|
+| 2025-11 | 100.0% | 28.4% | 20.9% | 12.7% |
+| 2025-12 | 100.0% | 32.6% | 24.3% | 9.7% |
+| 2026-01 | 100.0% | 42.4% | 23.7% | 9.4% |
+| 2026-02 | 100.0% | 27.8% | 23.8% | 7.3% |
+| 2026-03 | 100.0% | 31.1% | 16.6% | 11.9% |
+
+Month-1 retention varies between 27.8% and 42.4% across cohorts. Because the
+data is synthetic, these values describe the generator's decay assumption — they
+are not a benchmark for any real business.
+
+![Retention heatmap](retention_heatmap.png)
+
 ## Interpretation and limitations
 
 - Synthetic repeat-purchase behavior is simulated and is not calibrated to an
