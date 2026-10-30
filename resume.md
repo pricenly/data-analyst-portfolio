@@ -66,23 +66,19 @@ hybrid or Kyiv office).
 
 ---
 
-## EXPERIENCE
+## PRACTICE & COURSEWORK
 
-**Customer Retention & Sales Analytics Specialist** — Digital / e-commerce agency (remote)
-*2023 – Present*
-- Tracked conversion and repeat-purchase metrics for high-ticket accounts and
-  reported drop-off points to account managers.
-- A/B tested outreach scripts and messaging, feeding results back into the next
-  campaign cycle.
-- Automated weekly reporting in Google Sheets, removing 4+ hours of manual work
-  per week.
+**Independent analytics practice** — *2023 – present*
+- Built four end-to-end projects (SQL, Python EDA, cohort retention, Tableau
+  specification), each documented with its assumptions and limitations.
+- Practised PostgreSQL on public datasets: CTEs, window functions, cohort and
+  RFM logic, query plans.
+- Rebuilt analyses after feedback instead of leaving the first version: the
+  Superstore project went through a full data-quality and path-handling revision.
 
-**Founder / Commercial Operations** — D2C streetwear project (Kyiv)
-*2021 – 2023*
-- Modelled unit economics (CAC, gross margin, AOV) in Excel to set pricing and
-  negotiate supply costs.
-- Analysed repeat-purchase behaviour and customer feedback to adjust the
-  product range.
+**Relevant coursework** — *National University of Kyiv-Mohyla Academy*
+- Statistics, econometrics, micro- and macroeconomics, business modelling,
+  data-driven decision making.
 
 ---
 
